@@ -1,0 +1,70 @@
+<header class="bg-primary text-white shadow-md w-full fixed top-0 left-0 z-50">
+    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <div class="text-2xl font-bold">
+            <a routerLink="/" class="flex items-center gap-3 italic" scrollToTop>
+                <img class="w-[50px] h-[50px]" src="assets/images/icons/logo_lite.png" alt="" /><span>Flipkart</span>
+            </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="hidden md:flex w-1/3">
+            <input
+                type="text"
+                placeholder="Search for products, brands and more"
+                class="w-full p-2 rounded-md border border-gray-300 focus:border-primary focus:ring-primary focus:ring-2 focus:outline-none"
+            />
+        </div>
+
+        <!-- Navigation and Icons -->
+        <div class="hidden md:flex items-center space-x-6 font-semibold">
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a routerLink="/" class="">Home </a></li>
+                    <li><a routerLink="/order" class="">Orders </a></li>
+                    <li><a routerLink="/login" class="">Login</a></li>
+                    <a routerLink="/screen-view" style="color:red">Go to Screen View</a>
+
+                </ul>
+            </nav>
+
+            <!-- Cart Icon -->
+            <a routerLink="/cart" class="relative">
+                <!-- Cart Icon itself -->
+                <i class="fa-solid fa-cart-shopping text-white text-xl"></i>
+
+                <span
+                    class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center"
+                >
+                    {{ quantity$ | async }}
+                </span>
+            </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden" (click)="toggleNav = !toggleNav">
+            <button id="menuToggle" class="focus:outline-none">
+                <svg
+                    class="w-6 h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu (Hidden by default) -->
+    <div id="mobileMenu" class="md:hidden bg-white border-t border-gray-200" [ngClass]="toggleNav ? '' : 'hidden'">
+        <nav class="px-4 py-4 space-y-4">
+            <a href="#" class="block text-gray-700 hover:text-primary">Home</a>
+            <a href="#" class="block text-gray-700 hover:text-primary">Shop</a>
+            <a href="#" class="block text-gray-700 hover:text-primary">Contact</a>
+            <!-- Mobile Search Bar -->
+            <input type="text" placeholder="Search products..." class="w-full p-2 rounded-md border border-gray-300" />
+        </nav>
+    </div>
+</header>

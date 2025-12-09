@@ -1,0 +1,28 @@
+<div class="w-full h-screen flex items-center justify-center bg-primary-dark pt-24 pb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 w-full max-w-4xl h-full">
+        <div class="bg-primary flex flex-col justify-between relative px-6 md:px-10 py-8 md:py-16">
+            <div>
+                <p class="text-3xl text-white font-medium">Looks like you're new here!</p>
+                <p class="text-xl pt-4 md:pt-8 text-white">Sign up with your mobile number to get started</p>
+            </div>
+            <img
+                class="absolute bottom-5 left-5 w-3/4 max-w-xs hidden md:block"
+                src="assets/images/login_img.png"
+                alt="Login Illustration"
+            />
+        </div>
+        <div class="bg-white px-6 md:px-8 py-8 md:py-16">
+            <div class="w-full max-w-md mx-auto">
+                <app-dynamic-form [formFields]="_signupFormSchema"></app-dynamic-form>
+                <div class="pt-5">
+                    <a
+                        class="w-full bg-white text-primary text-xl font-medium shadow-md py-3 rounded-lg text-center block"
+                        routerLink="/login"
+                    >
+                        Existing User? Log in
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
