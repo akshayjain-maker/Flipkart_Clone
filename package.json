@@ -21,7 +21,7 @@
     "@angular/material": "~16.2.14",
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
-    "@angular/router": "^16.2.0",
+    "@angular/router": "^16.2.12",
     "@ngrx/effects": "16",
     "@ngrx/store": "16",
     "@ngrx/store-devtools": "16",

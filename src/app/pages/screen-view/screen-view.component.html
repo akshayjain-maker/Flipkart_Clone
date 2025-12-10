@@ -72,16 +72,70 @@
 
 
     <!-- 🔥 IMAGE POPUP MODAL -->
-    <div *ngIf="selectedImage" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[999]"
-        (click)="closeImage()">
-            <button (click)="closeImage()"
-      class="absolute top-4 right-4 text-white text-3xl font-bold hover:text-red-400 transition">
-      ✕
+    <!-- 🔥 IMAGE POPUP MODAL -->
+<!-- 🔥 IMAGE POPUP MODAL -->
+<div *ngIf="selectedImage"
+     class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[999]">
+
+  <div class="bg-white w-[80%] max-h-[90%] rounded-lg p-6 flex gap-6 overflow-y-auto relative">
+
+    <!-- Close Button -->
+    <button (click)="closeImage()"
+            class="absolute top-3 right-4 text-gray-700 text-2xl font-bold hover:text-red-500 transition">
+        ✕
     </button>
-        <img [src]="selectedImage" 
-            class="max-w-[90%] max-h-[90%] rounded-lg shadow-lg cursor-zoom-out transition">
+    <div class="w-1/2 flex flex-col items-center gap-4">
+
+        <!-- Product Image -->
+        <img [src]="selectedImage"
+             class="max-h-[60vh] w-auto rounded-lg shadow-md" />
+
+        <!-- Buttons -->
+        <div class="flex gap-5 mt-2">
+            <button class="bg-orange-500 px-6 py-2 text-white rounded-lg hover:bg-orange-600">
+                Add to Cart
+            </button>
+            <button class="bg-blue-600 px-6 py-2 text-white rounded-lg hover:bg-blue-700"(click)="buyNow()">
+                Buy Now
+            </button>
+        </div>
+    </div>
+    <!-- =========== LEFT DETAILS SECTION =========== -->
+    <div class="w-1/2 pr-5 overflow-y-auto">
+
+        <h2 class="text-3xl font-bold mb-3">{{ selectedProduct?.name }}</h2>
+
+        <p class="text-green-600 text-2xl font-semibold">
+            ₹ {{ selectedProduct?.price }}
+        </p>
+        <p class="text-gray-500 text-sm mb-3">
+            Upto {{ selectedProduct?.offer }}% OFF
+        </p>
+
+        <h3 class="font-bold text-lg mt-4">Description</h3>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">
+            {{ selectedProduct?.description }}
+        </p>
+
+        <h3 class="font-bold text-lg mt-4">Available Offers</h3>
+        <ul class="list-disc pl-5 text-gray-700 text-sm mb-4">
+            <li *ngFor="let offer of selectedProduct?.offers">{{offer}}</li>
+        </ul>
+
+        <h3 class="font-bold text-lg mt-4">Specifications</h3>
+        <ul class="list-disc pl-5 text-gray-700 text-sm">
+            <li *ngFor="let spec of selectedProduct?.specifications">{{spec}}</li>
+        </ul>
 
     </div>
+
+    <!-- =========== RIGHT IMAGE & BUY BUTTONS =========== -->
+
+
+  </div>
+</div>
+
+
 
 
 

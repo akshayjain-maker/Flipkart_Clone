@@ -1,38 +1,87 @@
-<div class="p-6">
+    <div class="p-6">
 
-  <button (click)="goBack()" 
-    class="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-    ← Back
-  </button>
+    <button (click)="goBack()" 
+        class="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        ← Back
+    </button>
 
-  <h1 class="text-2xl font-bold mb-4">{{category}} Products</h1>
+    <h1 class="text-2xl font-bold mb-4">{{category}} Products</h1>
 
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
-    <div *ngFor="let item of filteredProducts" 
-        class="bg-white shadow hover:shadow-lg rounded-xl p-3 cursor-pointer transition hover:scale-[1.03]"
-        (click)="openImage(item.image)">
-        
-        <img [src]="item.image" class="h-40 w-full object-cover rounded mb-2"/>
+        <div *ngFor="let item of filteredProducts" 
+            class="bg-white shadow hover:shadow-lg rounded-xl p-3 cursor-pointer transition hover:scale-[1.03]"
+            (click)="openImage(item)">
+            
+            <img [src]="item.image" class="h-40 w-full object-cover rounded mb-2"/>
 
-        <h3 class="font-semibold truncate">{{item.name}}</h3>
-        <p class="text-green-600 font-bold">₹ {{item.price}}</p>
-        <p class="text-gray-500 text-xs">Upto {{item.offer}}% Off</p>
+            <h3 class="font-semibold truncate">{{item.name}}</h3>
+            <p class="text-green-600 font-bold">₹ {{item.price}}</p>
+            <p class="text-gray-500 text-xs">Upto {{item.offer}}% Off</p>
+        </div>
+
     </div>
+
+
+    <!-- 🔥 IMAGE POPUP MODAL -->
+    <div *ngIf="selectedImage"
+     class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[999]">
+
+  <div class="bg-white w-[80%] max-h-[90%] rounded-lg p-6 flex gap-6 overflow-y-auto relative">
+
+    <!-- Close Button -->
+    <button (click)="closeImage()"
+            class="absolute top-3 right-4 text-gray-700 text-2xl font-bold hover:text-red-500 transition">
+        ✕
+    </button>
+    <div class="w-1/2 flex flex-col items-center gap-4">
+
+        <!-- Product Image -->
+        <img [src]="selectedImage"
+             class="max-h-[60vh] w-auto rounded-lg shadow-md" />
+
+        <!-- Buttons -->
+        <div class="flex gap-5 mt-2">
+            <button class="bg-orange-500 px-6 py-2 text-white rounded-lg hover:bg-orange-600" >
+                Add to Cart
+            </button>
+            <button class="bg-blue-600 px-6 py-2 text-white rounded-lg hover:bg-blue-700" (click)="buyNow()">
+                Buy Now
+            </button>
+        </div>
+    </div>
+    <!-- =========== LEFT DETAILS SECTION =========== -->
+    <div class="w-1/2 pr-5 overflow-y-auto">
+
+        <h2 class="text-3xl font-bold mb-3">{{ selectedProduct?.name }}</h2>
+
+        <p class="text-green-600 text-2xl font-semibold">
+            ₹ {{ selectedProduct?.price }}
+        </p>
+        <p class="text-gray-500 text-sm mb-3">
+            Upto {{ selectedProduct?.offer }}% OFF
+        </p>
+
+        <h3 class="font-bold text-lg mt-4">Description</h3>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">
+            {{ selectedProduct?.description }}
+        </p>
+
+        <h3 class="font-bold text-lg mt-4">Available Offers</h3>
+        <ul class="list-disc pl-5 text-gray-700 text-sm mb-4">
+            <li *ngFor="let offer of selectedProduct?.offers">{{offer}}</li>
+        </ul>
+
+        <h3 class="font-bold text-lg mt-4">Specifications</h3>
+        <ul class="list-disc pl-5 text-gray-700 text-sm">
+            <li *ngFor="let spec of selectedProduct?.specifications">{{spec}}</li>
+        </ul>
+
+    </div>
+
+    <!-- =========== RIGHT IMAGE & BUY BUTTONS =========== -->
+
 
   </div>
 </div>
-
-
-<!-- 🔥 IMAGE POPUP MODAL -->
-<div *ngIf="selectedImage" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
-  
-  <!-- Close Icon -->
-  <button (click)="closeImage()" 
-    class="absolute top-5 right-5 text-white text-3xl font-bold cursor-pointer">
-    ✕
-  </button>
-
-  <img [src]="selectedImage" 
-    class="max-w-[90%] max-h-[90%] rounded-lg shadow-lg"/>
-</div>
+    </div>

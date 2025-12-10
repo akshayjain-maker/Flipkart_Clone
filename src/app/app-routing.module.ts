@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router'
 import { HomeComponent } from './pages/home/home.component'
 import { ScreenViewComponent } from './pages/screen-view/screen-view.component';
 import { CategoryProductsComponent } from './pages/category-products/category-products.component';
+import { OrderCheckoutComponent } from './pages/order-checkout/order-checkout.component';
+import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
 const routes: Routes = [
     {
         path: '',
@@ -51,6 +53,14 @@ const routes: Routes = [
     {
         path: 'screen-view',
         component: ScreenViewComponent
+    },
+    { 
+        path: 'checkout', 
+        component: OrderCheckoutComponent
+    },
+    { 
+        path: 'order-summary', 
+        component: OrderSummaryComponent
     },
     {
         path: '**',

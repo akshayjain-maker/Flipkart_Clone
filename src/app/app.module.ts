@@ -20,7 +20,9 @@ import { UtilsModule } from './services/utils.module'
 import { rootEffects } from './store/effect'
 import { metaReducers, reducers } from './store/reducer';
 import { ScreenViewComponent } from './pages/screen-view/screen-view.component';
-import { CategoryProductsComponent } from './pages/category-products/category-products.component'
+import { CategoryProductsComponent } from './pages/category-products/category-products.component';
+import { OrderCheckoutComponent } from './pages/order-checkout/order-checkout.component';
+import { OrderSummaryComponent } from './pages/order-summary/order-summary.component'
 const storeDevtoolsModule = !environment.production
     ? [
           StoreDevtoolsModule.instrument({
@@ -31,7 +33,7 @@ const storeDevtoolsModule = !environment.production
     : []
 
 @NgModule({
-    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent],
+    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

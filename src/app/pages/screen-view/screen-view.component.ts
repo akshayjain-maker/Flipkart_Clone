@@ -11,7 +11,7 @@ export class ScreenViewComponent {
     selectedImage: string | null = null;
     @ViewChild('owlCarousel', { static: false }) owlCarousel: any;
     progress = 0;
-
+    selectedProduct: any = null;
     categories = [
         "Mobiles",
         "TVs & Appliances",
@@ -73,17 +73,80 @@ export class ScreenViewComponent {
 
 
     bestProducts = [
-        { name: "iPhone 13", price: 52999, offer: 20, image: "assets/images/mobile/mob1.jpg" },
-        { name: "Samsung S22", price: 34999, offer: 30, image: "assets/images/mobile/mob2.jpg" },
-        { name: "Google Pixel", price: 1499, offer: 40, image: "assets/images/mobile/mob3.jpg" },
-        { name: "Realme 13", price: 2399, offer: 45, image: "assets/images/mobile/mob4.jpg" },
-        { name: "Redmi Note 15", price: 4999, offer: 35, image: "assets/images/mobile/mob5.jpg" }
+        { name: "iPhone 13", price: 52999, offer: 20, image: "assets/images/mobile/mob1.jpg",description: "Powerful A15 Bionic chipset with stunning Super Retina display.",
+      offers: [
+        "Bank Offer: 5% Cashback on ICICI Cards",
+        "No Cost EMI Available",
+        "Exchange offer upto ₹15,000"
+      ],
+      specifications: [
+        "6.1-inch Display",
+        "128GB Storage",
+        "12MP Dual Camera",
+        "A15 Bionic Chip"
+      ]
+     },
+        { name: "Samsung S22", price: 34999, offer: 30, image: "assets/images/mobile/mob2.jpg",description: "Powerful A15 Bionic chipset with stunning Super Retina display.",
+      offers: [
+        "Bank Offer: 5% Cashback on ICICI Cards",
+        "No Cost EMI Available",
+        "Exchange offer upto ₹15,000"
+      ],
+      specifications: [
+        "6.1-inch Display",
+        "128GB Storage",
+        "12MP Dual Camera",
+        "A15 Bionic Chip"
+      ]
+     },
+        { name: "Google Pixel", price: 14999, offer: 40, image: "assets/images/mobile/mob3.jpg",description: "Powerful A15 Bionic chipset with stunning Super Retina display.",
+      offers: [
+        "Bank Offer: 5% Cashback on ICICI Cards",
+        "No Cost EMI Available",
+        "Exchange offer upto ₹15,000"
+      ],
+      specifications: [
+        "6.1-inch Display",
+        "128GB Storage",
+        "12MP Dual Camera",
+        "A15 Bionic Chip"
+      ]
+     },
+        { name: "Realme 13", price: 23999, offer: 45, image: "assets/images/mobile/mob4.jpg",description: "Powerful A15 Bionic chipset with stunning Super Retina display.",
+      offers: [
+        "Bank Offer: 5% Cashback on ICICI Cards",
+        "No Cost EMI Available",
+        "Exchange offer upto ₹15,000"
+      ],
+      specifications: [
+        "6.1-inch Display",
+        "128GB Storage",
+        "12MP Dual Camera",
+        "A15 Bionic Chip"
+      ]
+     },
+        { name: "Redmi Note 15", price: 49999, offer: 35, image: "assets/images/mobile/mob5.jpg",description: "Powerful A15 Bionic chipset with stunning Super Retina display.",
+      offers: [
+        "Bank Offer: 5% Cashback on ICICI Cards",
+        "No Cost EMI Available",
+        "Exchange offer upto ₹15,000"
+      ],
+      specifications: [
+        "6.1-inch Display",
+        "128GB Storage",
+        "12MP Dual Camera",
+        "A15 Bionic Chip"
+      ]
+     }
     ];
 
 
-    openImage(img: string) {
-        this.selectedImage = img;
-    }
+openImage(img: string) {
+    const product = this.bestProducts.find(p => p.image === img);
+    this.selectedProduct = product || null;
+    this.selectedImage = img;
+}
+
 
     closeImage() {
         this.selectedImage = null;
@@ -91,6 +154,10 @@ export class ScreenViewComponent {
 
     goToCategory(cat: string) {
         this.router.navigate(['/products', cat]);
+    }
+
+    buyNow() {
+    this.router.navigate(['/checkout'], { state: { product: this.selectedProduct } });
     }
 
 }
