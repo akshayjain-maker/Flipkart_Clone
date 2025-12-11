@@ -1,17 +1,22 @@
-const express = require("express");
-const cors = require("cors");
 require("dotenv").config();
-const connectDB = require("./config/db");
+const express = require("express");
+const { connectDB, sequelize } = require("./config/db");
+
+const userRoutes = require("./routes/userRoutes");
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
+// Connect database
 connectDB();
 
-// Routes
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/products", require("./routes/productRoutes"));
+// SYNC MODELS (Important)
+sequelize.sync({ alter: true })  
+  .then(() => console.log("📌 All models synced"))
+  .catch((err) => console.log("Sync error:", err));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Routes
+app.use("/api/users", userRoutes);
+
+// Start server
+app.listen(5000, () => console.log("Server running on 5000"));
