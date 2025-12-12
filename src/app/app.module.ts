@@ -23,6 +23,10 @@ import { ScreenViewComponent } from './pages/screen-view/screen-view.component';
 import { CategoryProductsComponent } from './pages/category-products/category-products.component';
 import { OrderCheckoutComponent } from './pages/order-checkout/order-checkout.component';
 import { OrderSummaryComponent } from './pages/order-summary/order-summary.component'
+import { ToastrModule } from 'ngx-toastr';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 const storeDevtoolsModule = !environment.production
     ? [
           StoreDevtoolsModule.instrument({
@@ -46,9 +50,19 @@ const storeDevtoolsModule = !environment.production
         CarouselModule,
         ProductCarousalModule,
         UtilsModule,
-        AppDirectiveModule
+        AppDirectiveModule,
+        ToastrModule.forRoot({
+        timeOut: 3000,
+        progressBar: true,
+        closeButton: true,
+        positionClass: 'toast-top-right'
+        })
     ],
-    providers: [],
+    providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -22,9 +22,12 @@
                 <ul class="flex space-x-6">
                     <li><a routerLink="/" class="">Home </a></li>
                     <li><a routerLink="/order" class="">Orders </a></li>
-                    <li><a routerLink="/login" class="">Login</a></li>
-                    <a routerLink="/screen-view" style="color:red">Go to Screen View</a>
-
+                    <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login">Login</a></li>
+                    <li *ngIf="auth.isLoggedIn()">
+                        <button (click)="logout()" class="focus:outline-none">
+                            Logout
+                        </button>
+                    </li>
                 </ul>
             </nav>
 

@@ -2,9 +2,9 @@ import { FormField } from 'src/app/reusable/dynamic-form/dynamic-form.interface'
 
 export const loginFormSchema: FormField[] = [
     // {
-    //     key: 'firstName',
+    //     key: 'Name',
     //     type: 'text',
-    //     label: 'First Name',
+    //     label: 'Full Name',
     //     required: true,
     //     minLength: 2,
     //     maxLength: 30,

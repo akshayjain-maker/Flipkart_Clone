@@ -8,7 +8,7 @@ import { OrderSummaryComponent } from './pages/order-summary/order-summary.compo
 const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        component: ScreenViewComponent
     },
     {
         path: 'products',

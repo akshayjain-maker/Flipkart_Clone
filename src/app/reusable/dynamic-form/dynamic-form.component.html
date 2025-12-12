@@ -1,11 +1,29 @@
 <form #form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="w-full">
-    <div class="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 gap-4" #formContainer></div>
-    <ng-container *ngIf="actionTemplate; else defaultAction" [ngTemplateOutlet]="actionTemplate"></ng-container>
+    <div 
+        class="w-full grid grid-cols-1 sm:grid-cols-1 md:grid-cols-12 gap-4" 
+        #formContainer>
+    </div>
+
+    <!-- FIX: Buttons always inside form -->
+    <div class="flex justify-end gap-4 mt-4">
+        <ng-container *ngIf="actionTemplate; else defaultAction"
+                      [ngTemplateOutlet]="actionTemplate">
+        </ng-container>
+    </div>
 </form>
 
 <ng-template #defaultAction>
-    <div class="flex justify-end gap-4">
-        <button *ngIf="hasResetBtn" mat-raised-button color="secondary" type="button" (click)="onReset()">Clear</button>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
-    </div>
+    <button *ngIf="hasResetBtn" 
+            mat-raised-button 
+            color="secondary" 
+            type="button" 
+            (click)="onReset()">
+        Clear
+    </button>
+
+    <button mat-raised-button 
+            color="primary" 
+            type="submit">
+        Submit
+    </button>
 </ng-template>

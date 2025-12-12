@@ -25,9 +25,9 @@ export class DynamicFormComponent implements OnInit {
     @Input() hasResetBtn: boolean = false
 
     @ViewChild('formContainer', { read: ViewContainerRef, static: true }) formContainer: ViewContainerRef | undefined
-    @ViewChild('form', { read: ViewContainerRef, static: true }) form!: ViewContainerRef
+    @ViewChild('form') form: any;
 
-    @Output() formGroupValueEvent = new EventEmitter<any>()
+    @Output() formSubmit = new EventEmitter<any>()
     @Output() formGroupEvent = new EventEmitter<FormGroup>()
 
     constructor(private readonly dynamicFormFactory: DynamicFormFactory) {}
@@ -109,7 +109,7 @@ export class DynamicFormComponent implements OnInit {
         if (this.formGroup.invalid) {
             return
         }
-        this.formGroupValueEvent.emit(this.formGroup.value)
+        this.formSubmit.emit(this.formGroup.value)
         this.formGroupEvent.emit(this.formGroup)
 
         console.log('Alway show this.formGroup.value', this.formGroup.value)

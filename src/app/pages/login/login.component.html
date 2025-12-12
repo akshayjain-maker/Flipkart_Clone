@@ -9,7 +9,7 @@
         </div>
         <div class="bg-white px-8 py-16 relative">
             <div class="w-full max-w-md">
-                <app-dynamic-form [formFields]="_loginFormSchema"></app-dynamic-form>
+                <app-dynamic-form [formFields]="_loginFormSchema" (formSubmit)="onSubmit($event)"></app-dynamic-form>
             </div>
             <div class="absolute bottom-10 left-0 text-center w-full">
                 <a class="text-primary text-lg font-medium" routerLink="/signup">New to Flipkart? Create an account </a>
