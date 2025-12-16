@@ -21,6 +21,7 @@ export class LoginComponent {
     onSubmit(formData: any) {
     this.authService.login(formData).subscribe({
         next: (res) => {
+            console.log(res, "Login Response");
         this.toastr.success("Login Successful!", "Success");
 
         this.authService.saveToken(res.token);

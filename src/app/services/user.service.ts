@@ -12,4 +12,9 @@ export class UserService {
   getProfile() {
     return this.http.get(`${this.baseUrl}/profile`);
   }
+
+  updateProfile(data: any) {
+  return this.http.put(`${this.baseUrl}/profile`, data);
+}
+
 }

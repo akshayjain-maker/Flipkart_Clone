@@ -26,6 +26,8 @@ import { OrderSummaryComponent } from './pages/order-summary/order-summary.compo
 import { ToastrModule } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { ReactiveFormsModule } from '@angular/forms'
 
 const storeDevtoolsModule = !environment.production
     ? [
@@ -37,7 +39,7 @@ const storeDevtoolsModule = !environment.production
     : []
 
 @NgModule({
-    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent],
+    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent, ProfileComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
@@ -56,7 +58,8 @@ const storeDevtoolsModule = !environment.production
         progressBar: true,
         closeButton: true,
         positionClass: 'toast-top-right'
-        })
+        }),
+        ReactiveFormsModule
     ],
     providers: [{
     provide: HTTP_INTERCEPTORS,

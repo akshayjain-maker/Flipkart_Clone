@@ -5,6 +5,7 @@ import { ScreenViewComponent } from './pages/screen-view/screen-view.component';
 import { CategoryProductsComponent } from './pages/category-products/category-products.component';
 import { OrderCheckoutComponent } from './pages/order-checkout/order-checkout.component';
 import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 const routes: Routes = [
     {
         path: '',
@@ -46,21 +47,26 @@ const routes: Routes = [
     //     path: 'screen-view',
     //     loadChildren: () => import('./pages/screen-view/screen-view.module').then(m => m.ScreenViewModule)
     // },
-    { path: 'products/:category', 
+    {
+        path: 'products/:category',
         component: CategoryProductsComponent
     }
-     ,
+    ,
     {
         path: 'screen-view',
         component: ScreenViewComponent
     },
-    { 
-        path: 'checkout', 
+    {
+        path: 'checkout',
         component: OrderCheckoutComponent
     },
-    { 
-        path: 'order-summary', 
+    {
+        path: 'order-summary',
         component: OrderSummaryComponent
+    },
+    {
+        path: 'profile',
+        component: ProfileComponent
     },
     {
         path: '**',
@@ -72,4 +78,4 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
