@@ -6,6 +6,10 @@ import { CategoryProductsComponent } from './pages/category-products/category-pr
 import { OrderCheckoutComponent } from './pages/order-checkout/order-checkout.component';
 import { OrderSummaryComponent } from './pages/order-summary/order-summary.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { AccountLayoutComponent } from './pages/account-layout/account-layout.component';
+import { AddressesComponent } from './pages/account/addresses/addresses.component';
+import { PanComponent } from './pages/account/pan/pan.component';
+import { WishlistComponent } from './pages/account/wishlist/wishlist.component';
 const routes: Routes = [
     {
         path: '',
@@ -64,10 +68,22 @@ const routes: Routes = [
         path: 'order-summary',
         component: OrderSummaryComponent
     },
+    // {
+    //     path: 'profile',
+    //     component: ProfileComponent
+    // },
     {
-        path: 'profile',
-        component: ProfileComponent
+        path: 'account',
+        component: AccountLayoutComponent,
+        children: [
+            { path: '', redirectTo: 'account', pathMatch: 'full' },
+            { path: 'profile', component: ProfileComponent },
+            { path: 'addresses', component: AddressesComponent },
+            { path: 'pan', component: PanComponent },
+            { path: 'wishlist', component: WishlistComponent }
+        ]
     },
+
     {
         path: '**',
         loadChildren: () => import('./pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)

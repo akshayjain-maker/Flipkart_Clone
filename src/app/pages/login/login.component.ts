@@ -32,4 +32,9 @@ export class LoginComponent {
         }
     });
     }
+
+    testNav() {
+  console.log('clicked');
+  this.router.navigate(['/signup']);
+}
 }

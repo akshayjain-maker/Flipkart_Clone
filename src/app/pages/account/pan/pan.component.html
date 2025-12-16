@@ -1,0 +1,62 @@
+<section class="flex-1 bg-white shadow-sm rounded-sm p-6">
+  <h2 class="text-lg font-semibold mb-4">PAN Card Information</h2>
+
+  <form [formGroup]="panForm" class="space-y-4">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="font-medium mb-1 block">PAN Number</label>
+        <input 
+          #panInput
+          class="input border p-2 rounded w-full uppercase-input"
+          placeholder="ABCDE1234F"
+          formControlName="panNumber"
+          [readonly]="!editMode"
+          (input)="panForm.get('panNumber')?.setValue(panInput.value.toUpperCase(), { emitEvent: false })"
+        />
+        <p class="text-xs text-red-500 mt-1"
+          *ngIf="panForm.get('panNumber')?.touched && panForm.get('panNumber')?.invalid">
+          <span *ngIf="panForm.get('panNumber')?.errors?.['required']">PAN is required</span>
+          <span *ngIf="panForm.get('panNumber')?.errors?.['pattern']">Invalid PAN format (e.g., ABCDE1234F)</span>
+        </p>
+      </div>
+
+      <div>
+        <label class="font-medium mb-1 block">Full Name</label>
+        <input 
+          class="input border p-2 rounded w-full"
+          placeholder="As per PAN"
+          formControlName="fullName"
+          [readonly]="!editMode"
+        />
+        <p class="text-xs text-red-500 mt-1"
+          *ngIf="panForm.get('fullName')?.touched && panForm.get('fullName')?.invalid">
+          Full Name is required
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-4 flex gap-4">
+      <!-- Show SAVE only in edit mode -->
+      <button 
+        *ngIf="editMode"
+        type="button" 
+        class="bg-primary text-white px-6 py-2 rounded" 
+        (click)="savePan()">
+        SAVE
+      </button>
+
+      <!-- Show EDIT only if not in edit mode -->
+      <button 
+        *ngIf="!editMode"
+        type="button" 
+        class="bg-primary text-white px-6 py-2 rounded" 
+        (click)="enableEdit()">
+        EDIT
+      </button>
+
+      <button *ngIf="editMode" type="button" class="border px-6 py-2 rounded" (click)="cancel()">CANCEL</button>
+    </div>
+
+  </form>
+</section>

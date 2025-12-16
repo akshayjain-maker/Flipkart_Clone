@@ -27,7 +27,12 @@ import { ToastrModule } from 'ngx-toastr';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ProfileComponent } from './pages/profile/profile.component';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms';
+import { AccountLayoutComponent } from './pages/account-layout/account-layout.component';
+import { AddressesComponent } from './pages/account/addresses/addresses.component';
+import { PanComponent } from './pages/account/pan/pan.component';
+import { WishlistComponent } from './pages/account/wishlist/wishlist.component';
+
 
 const storeDevtoolsModule = !environment.production
     ? [
@@ -39,7 +44,7 @@ const storeDevtoolsModule = !environment.production
     : []
 
 @NgModule({
-    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent, ProfileComponent],
+    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent, ProfileComponent, AccountLayoutComponent, AddressesComponent, PanComponent, WishlistComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,

@@ -3,7 +3,7 @@ import { signupFormSchema } from './form.schema';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthInterceptor } from 'src/app/interceptors/auth.interceptor';
+
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -17,7 +17,6 @@ export class SignupComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private authInterceptor: AuthInterceptor
   ) {}
 
   ngOnInit(): void {

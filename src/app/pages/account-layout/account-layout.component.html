@@ -1,0 +1,27 @@
+<div class="flex max-w-6xl mx-auto gap-6 mt-4">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-sm rounded-sm">
+    <div class="flex items-center gap-3 p-4 border-b">
+      <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-user text-xl text-gray-600"></i>
+      </div>
+      <div>
+        <p class="text-sm text-gray-500">Hello,</p>
+        <p class="font-semibold">{{ user?.firstName }} {{ user?.lastName }}</p>
+      </div>
+    </div>
+
+    <nav class="py-2 text-sm">
+      <a routerLink="profile" routerLinkActive="bg-blue-50 font-medium" class="block px-4 py-2 hover:bg-gray-100">Profile Information</a>
+      <a routerLink="addresses" routerLinkActive="bg-blue-50 font-medium" class="block px-4 py-2 hover:bg-gray-100">Manage Addresses</a>
+      <a routerLink="pan" routerLinkActive="bg-blue-50 font-medium" class="block px-4 py-2 hover:bg-gray-100">PAN Card Information</a>
+      <a routerLink="wishlist" routerLinkActive="bg-blue-50 font-medium" class="block px-4 py-2 hover:bg-gray-100">My Wishlist</a>
+      <button (click)="logout()" class="w-full text-left px-4 py-3 text-red-600 hover:bg-gray-100 border-t">Logout</button>
+    </nav>
+  </aside>
+
+  <!-- Right content -->
+  <section class="flex-1 bg-white shadow-sm rounded-sm p-6">
+    <router-outlet></router-outlet>
+  </section>
+</div>

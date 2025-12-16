@@ -29,13 +29,17 @@
                         <!-- Dropdown -->
                         <div *ngIf="showUserMenu"
                             class="absolute right-0 mt-2 w-44 bg-white text-gray-700 rounded-md shadow-lg border z-50">
-                            <a routerLink="/profile" class="block px-4 py-2 hover:bg-gray-100">
+                            <!-- User Dropdown -->
+                            <a routerLink="/account/profile" class="block px-4 py-2 hover:bg-gray-100">
                                 My Profile
                             </a>
-
-                            <a routerLink="/order" class="block px-4 py-2 hover:bg-gray-100">
-                                Orders
+                            <a routerLink="/account/addresses" class="block px-4 py-2 hover:bg-gray-100">
+                                Addresses
                             </a>
+                            <a routerLink="/account/wishlist" class="block px-4 py-2 hover:bg-gray-100">
+                                Wishlist
+                            </a>
+
 
                             <button (click)="openLogoutPopup()" class="w-full text-left px-4 py-2 hover:bg-gray-100">
                                 Logout

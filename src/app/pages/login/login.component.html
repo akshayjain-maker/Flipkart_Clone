@@ -12,7 +12,7 @@
                 <app-dynamic-form [formFields]="_loginFormSchema" (formSubmit)="onSubmit($event)"></app-dynamic-form>
             </div>
             <div class="absolute bottom-10 left-0 text-center w-full">
-                <a class="text-primary text-lg font-medium" routerLink="/signup">New to Flipkart? Create an account </a>
+                <a class="text-primary text-lg font-medium" [routerLink]="['/signup']">New to Flipkart? Create an account </a>
             </div>
         </div>
     </div>

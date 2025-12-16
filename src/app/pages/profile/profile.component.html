@@ -1,213 +1,86 @@
-<div class="bg-gray-100 min-h-screen pt-24 pb-10">
+<form [formGroup]="profileForm">
 
-  <div class="max-w-6xl mx-auto flex gap-6">
+  <!-- PERSONAL INFO -->
+  <div class="mb-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="font-semibold text-lg">Personal Information</h2>
 
-    <!-- LEFT SIDEBAR (NO CHANGE) -->
-    <aside class="w-64 bg-white shadow-sm rounded-sm">
-      <div class="flex items-center gap-3 p-4 border-b">
-        <div class="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-          <i class="fa-solid fa-user text-xl text-gray-600"></i>
-        </div>
-        <div>
-          <p class="text-sm text-gray-500">Hello,</p>
-          <p class="font-semibold">{{ user?.firstName }} {{ user?.lastName }}</p>
-        </div>
-      </div>
-
-      <nav class="py-2 text-sm">
-        <a class="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer">
-          <i class="fa-solid fa-box"></i> My Orders
-        </a>
-
-        <div class="px-4 py-2 text-gray-500 font-semibold">ACCOUNT SETTINGS</div>
-
-        <a class="block px-4 py-2 text-primary font-medium bg-blue-50">
-          Profile Information
-        </a>
-
-        <a class="block px-4 py-2 hover:bg-gray-100">Manage Addresses</a>
-        <a class="block px-4 py-2 hover:bg-gray-100">PAN Card Information</a>
-
-        <div class="px-4 py-2 text-gray-500 font-semibold">MY STUFF</div>
-        <a class="block px-4 py-2 hover:bg-gray-100">My Reviews & Ratings</a>
-        <a class="block px-4 py-2 hover:bg-gray-100">All Notifications</a>
-        <a class="block px-4 py-2 hover:bg-gray-100">My Wishlist</a>
-
-        <button
-          (click)="logout()"
-          class="w-full text-left px-4 py-3 text-red-600 hover:bg-gray-100 border-t"
-        >
-          Logout
+      <ng-container *ngIf="!editMode; else editBtns">
+        <button type="button" (click)="enableEdit()" class="text-primary text-sm font-medium">
+          Edit
         </button>
-      </nav>
-    </aside>
+      </ng-container>
 
-    <!-- RIGHT CONTENT -->
-    <section class="flex-1 bg-white shadow-sm rounded-sm p-6">
-      <form [formGroup]="profileForm">
-
-        <!-- PERSONAL INFO -->
-        <div class="mb-6">
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="font-semibold text-lg">Personal Information</h2>
-
-            <ng-container *ngIf="!editMode; else editBtns">
-              <button
-                type="button"
-                (click)="enableEdit()"
-                class="text-primary text-sm font-medium"
-              >
-                Edit
-              </button>
-            </ng-container>
-
-            <ng-template #editBtns>
-              <div class="space-x-4">
-                <button
-                  type="button"
-                  (click)="saveProfile()"
-                  [disabled]="profileForm.invalid"
-                  class="text-primary text-sm font-medium disabled:opacity-50"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  (click)="cancelEdit()"
-                  class="text-gray-500 text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
-            </ng-template>
-          </div>
-
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-            <h2 class="font-semibold mb-2">Full Name</h2>
-              <input
-                class="input"
-                formControlName="firstName"
-                [disabled]="!editMode"
-              />
-              <p
-                class="text-xs text-red-500 mt-1"
-                *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.invalid"
-              >
-                First name is required
-              </p>
-            </div>
-
-            <!-- <div>
-                <h2 class="font-semibold mb-2">Last Name</h2>
-              <input
-                class="input"
-                formControlName="lastName"
-                [disabled]="!editMode"
-              />
-              <p
-                class="text-xs text-red-500 mt-1"
-                *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.invalid"
-              >
-                Last name is required
-              </p>
-            </div> -->
-          </div>
-
-          <div class="mt-4">
-           <h2 class="font-semibold mb-2">Gender</h2>
-            <label class="mr-4">
-              <input
-                type="radio"
-                value="Male"
-                formControlName="gender"
-                [disabled]="!editMode"
-              /> Male
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="Female"
-                formControlName="gender"
-                [disabled]="!editMode"
-              /> Female
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="other"
-                formControlName="other"
-                [disabled]="!editMode"
-              /> Other
-            </label>
-            <p
-              class="text-xs text-red-500 mt-1"
-              *ngIf="profileForm.get('gender')?.touched && profileForm.get('gender')?.invalid"
-            >
-              Gender is required
-            </p>
-          </div>
+      <ng-template #editBtns>
+        <div class="space-x-4">
+          <button type="button" (click)="saveProfile()" [disabled]="profileForm.invalid"
+                  class="text-primary text-sm font-medium disabled:opacity-50">
+            Save
+          </button>
+          <button type="button" (click)="cancelEdit()" class="text-gray-500 text-sm">
+            Cancel
+          </button>
         </div>
+      </ng-template>
+    </div>
 
-        <!-- EMAIL -->
-        <div class="mb-6">
-          <h2 class="font-semibold mb-2">Email Address</h2>
-          <input
-            class="input w-1/2 bg-gray-100"
-            formControlName="email"
-            [disabled]="!editMode"
-          />
-          <p
-            class="text-xs text-red-500 mt-1"
-            *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid"
-          >
-            Enter a valid email
-          </p>
-        </div>
-
-        <!-- PHONE -->
-        <div class="mb-6">
-          <h2 class="font-semibold mb-2">Mobile Number</h2>
-          <input
-            class="input w-1/2"
-            formControlName="phone"
-            [disabled]="!editMode"
-          />
-          <p
-            class="text-xs text-red-500 mt-1"
-            *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid"
-          >
-            Enter valid 10 digit mobile number
-          </p>
-        </div>
-
-      </form>
-
-      <!-- FAQ (NO CHANGE) -->
-      <div class="mt-8">
-        <h2 class="font-semibold mb-3">FAQs</h2>
-
-        <p class="text-sm font-medium">
-          What happens when I update my email address (or mobile number)?
-        </p>
-        <p class="text-sm text-gray-600 mb-3">
-          Your login email id (or mobile number) changes, likewise.
-        </p>
-
-        <p class="text-sm font-medium">
-          Does my Seller account get affected?
-        </p>
-        <p class="text-sm text-gray-600">
-          Flipkart has a single sign-on policy.
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <h2 class="font-semibold mb-2">Full Name</h2>
+        <input class="input" formControlName="firstName" [disabled]="!editMode" />
+        <p class="text-xs text-red-500 mt-1"
+           *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.invalid">
+          First name is required
         </p>
       </div>
+    </div>
 
-      <!-- ACTIONS (NO CHANGE) -->
-      <div class="mt-8 space-y-3">
-        <button class="text-primary text-sm">Deactivate Account</button><br />
-        <button class="text-red-600 text-sm">Delete Account</button>
-      </div>
-
-    </section>
+    <div class="mt-4">
+      <h2 class="font-semibold mb-2">Gender</h2>
+      <label class="mr-4"><input type="radio" value="Male" formControlName="gender" [disabled]="!editMode"/> Male</label>
+      <label><input type="radio" value="Female" formControlName="gender" [disabled]="!editMode"/> Female</label>
+      <label><input type="radio" value="Other" formControlName="other" [disabled]="!editMode"/> Other</label>
+      <p class="text-xs text-red-500 mt-1"
+         *ngIf="profileForm.get('gender')?.touched && profileForm.get('gender')?.invalid">
+        Gender is required
+      </p>
+    </div>
   </div>
+
+  <!-- EMAIL -->
+  <div class="mb-6">
+    <h2 class="font-semibold mb-2">Email Address</h2>
+    <input class="input w-1/2 bg-gray-100" formControlName="email" [disabled]="!editMode" />
+    <p class="text-xs text-red-500 mt-1"
+       *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid">
+      Enter a valid email
+    </p>
+  </div>
+
+  <!-- PHONE -->
+  <div class="mb-6">
+    <h2 class="font-semibold mb-2">Mobile Number</h2>
+    <input class="input w-1/2" formControlName="phone" [disabled]="!editMode" />
+    <p class="text-xs text-red-500 mt-1"
+       *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid">
+      Enter valid 10 digit mobile number
+    </p>
+  </div>
+
+</form>
+
+<!-- FAQ -->
+<div class="mt-8">
+  <h2 class="font-semibold mb-3">FAQs</h2>
+  <p class="text-sm font-medium">What happens when I update my email address (or mobile number)?</p>
+  <p class="text-sm text-gray-600 mb-3">Your login email id (or mobile number) changes, likewise.</p>
+
+  <p class="text-sm font-medium">Does my Seller account get affected?</p>
+  <p class="text-sm text-gray-600">Flipkart has a single sign-on policy.</p>
+</div>
+
+<!-- ACTIONS -->
+<div class="mt-8 space-y-3">
+  <button class="text-primary text-sm">Deactivate Account</button><br />
+  <button class="text-red-600 text-sm">Delete Account</button>
 </div>
