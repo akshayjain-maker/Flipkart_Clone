@@ -1,76 +1,41 @@
-import { Component } from '@angular/core';
-import { ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CategoryService } from 'src/app/services/category.service';
+
 @Component({
-    selector: 'app-screen-view',
-    templateUrl: './screen-view.component.html',
-    styleUrls: ['./screen-view.component.scss']
+  selector: 'app-screen-view',
+  templateUrl: './screen-view.component.html',
+  styleUrls: ['./screen-view.component.scss']
 })
-export class ScreenViewComponent {
-    constructor(private router: Router) { }
-    selectedImage: string | null = null;
-    @ViewChild('owlCarousel', { static: false }) owlCarousel: any;
-    progress = 0;
-    selectedProduct: any = null;
-    categories = [
-        "Mobiles",
-        "TVs & Appliances",
-        "Electronics",
-        "Home & Kitchen",
-        "Beauty & Toys",
-        "Furniture",
-        "Grocery"
-    ];
+export class ScreenViewComponent implements OnInit {
+  selectedImage: string | null = null;
+  selectedProduct: any = null;
+  @ViewChild('owlCarousel', { static: false }) owlCarousel: any;
+  progress = 0;
 
+  // Dynamic categories + pagination
+  categories: any[] = [];
+  page: number = 1;
+  limit: number = 10;
+  totalPages: number = 1;
 
-    banners: string[] = [
-        'assets/images/banners/banner5.jpg',
-        'assets/images/banners/banner2.jpg',
-        'assets/images/banners/banner3.jpg',
-        'assets/images/banners/banner4.jpg',
-        'assets/images/banners/banner1.jpg',
-    ];
+  banners: string[] = [
+    'assets/images/banners/banner5.jpg',
+    'assets/images/banners/banner2.jpg',
+    'assets/images/banners/banner3.jpg',
+    'assets/images/banners/banner4.jpg',
+    'assets/images/banners/banner1.jpg',
+  ];
 
-    bannerOptions = {
-        loop: true,
-        autoplay: true,
-        autoplayTimeout: 3000,
-        autoplayHoverPause: true,
-        items: 1,
-        dots: false,
-        nav: false
-    };
-
-    ngOnInit() {
-        this.animateProgress();
-    }
-
-    animateProgress() {
-        this.progress = 0;
-        let speed = 30;  // smooth speed
-        const interval = setInterval(() => {
-            this.progress += 1;
-            if (this.progress >= 100) {
-                clearInterval(interval);
-            }
-        }, 30);  // 30ms → 3 seconds total
-    }
-
-    onSlideChange() {
-        this.animateProgress();   // loader restart every slide 
-    }
-
-    prev() {
-        this.owlCarousel.previous();
-        this.onSlideChange();
-    }
-
-    next() {
-        this.owlCarousel.next();
-        this.onSlideChange();
-    }
-
-
+  bannerOptions = {
+    loop: true,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    autoplayHoverPause: true,
+    items: 1,
+    dots: false,
+    nav: false
+  };
 
     bestProducts = [
         { name: "iPhone 13", price: 52999, offer: 20, image: "assets/images/mobile/mob1.jpg",description: "Powerful A15 Bionic chipset with stunning Super Retina display.",
@@ -140,24 +105,75 @@ export class ScreenViewComponent {
      }
     ];
 
+  constructor(private router: Router, private categoryService: CategoryService) {}
 
-openImage(img: string) {
+  ngOnInit() {
+    this.animateProgress();
+    this.loadCategories(this.page);
+  }
+
+  animateProgress() {
+    this.progress = 0;
+    const interval = setInterval(() => {
+      this.progress += 1;
+      if (this.progress >= 100) clearInterval(interval);
+    }, 30);
+  }
+
+  onSlideChange() {
+    this.animateProgress();
+  }
+
+  prev() {
+    this.owlCarousel.previous();
+    this.onSlideChange();
+  }
+
+  next() {
+    this.owlCarousel.next();
+    this.onSlideChange();
+  }
+
+  openImage(img: string) {
     const product = this.bestProducts.find(p => p.image === img);
     this.selectedProduct = product || null;
     this.selectedImage = img;
-}
+  }
 
+  closeImage() {
+    this.selectedImage = null;
+  }
 
-    closeImage() {
-        this.selectedImage = null;
-    }
+  goToCategory(cat: string) {
+    this.router.navigate(['/products', cat]);
+  }
 
-    goToCategory(cat: string) {
-        this.router.navigate(['/products', cat]);
-    }
-
-    buyNow() {
+  buyNow() {
     this.router.navigate(['/checkout'], { state: { product: this.selectedProduct } });
-    }
+  }
 
+  /** 🔹 Load categories dynamically with limit and page */
+  loadCategories(page: number) {
+    this.categoryService.getCategories(page, this.limit).subscribe({
+      next: (res: any) => {
+        this.categories = res.data;
+        this.page = res.pagination.page;
+        this.totalPages = res.pagination.totalPages;
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  /** Pagination controls */
+  nextPage() {
+    if (this.page < this.totalPages) {
+      this.loadCategories(this.page + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.page > 1) {
+      this.loadCategories(this.page - 1);
+    }
+  }
 }

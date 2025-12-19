@@ -10,85 +10,119 @@ import { AccountLayoutComponent } from './pages/account-layout/account-layout.co
 import { AddressesComponent } from './pages/account/addresses/addresses.component';
 import { PanComponent } from './pages/account/pan/pan.component';
 import { WishlistComponent } from './pages/account/wishlist/wishlist.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 const routes: Routes = [
-    {
-        path: '',
-        component: ScreenViewComponent
-    },
-    {
+
+  // ================= USER SITE =================
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+
+      { path: '', component: ScreenViewComponent },
+
+      {
         path: 'products',
-        loadChildren: () => import('./pages/products/products.module').then(m => m.ProductsModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/products/products.module').then(m => m.ProductsModule)
+      },
+
+      {
         path: 'product/:productId',
-        loadChildren: () => import('./pages/product-details/product-details.module').then(m => m.ProductDetailsModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/product-details/product-details.module').then(m => m.ProductDetailsModule)
+      },
+
+      {
         path: 'login',
-        loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/login/login.module').then(m => m.LoginModule)
+      },
+
+      {
         path: 'signup',
-        loadChildren: () => import('./pages/signup/signup.module').then(m => m.SignupModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/signup/signup.module').then(m => m.SignupModule)
+      },
+
+      {
         path: 'about',
-        loadChildren: () => import('./pages/about/about.module').then(m => m.AboutModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/about/about.module').then(m => m.AboutModule)
+      },
+
+      {
         path: 'contact',
-        loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/contact/contact.module').then(m => m.ContactModule)
+      },
+
+      {
         path: 'cart',
-        loadChildren: () => import('./pages/cart/cart.module').then(m => m.CartModule)
-    },
-    {
+        loadChildren: () =>
+          import('./pages/cart/cart.module').then(m => m.CartModule)
+      },
+
+      {
         path: 'order',
-        loadChildren: () => import('./pages/order/order.module').then(m => m.OrderModule)
-    },
-    //     {
-    //     path: 'screen-view',
-    //     loadChildren: () => import('./pages/screen-view/screen-view.module').then(m => m.ScreenViewModule)
-    // },
-    {
+        loadChildren: () =>
+          import('./pages/order/order.module').then(m => m.OrderModule)
+      },
+
+      {
         path: 'products/:category',
         component: CategoryProductsComponent
-    }
-    ,
-    {
-        path: 'screen-view',
-        component: ScreenViewComponent
-    },
-    {
+      },
+
+      {
         path: 'checkout',
         component: OrderCheckoutComponent
-    },
-    {
+      },
+
+      {
         path: 'order-summary',
         component: OrderSummaryComponent
-    },
-    // {
-    //     path: 'profile',
-    //     component: ProfileComponent
-    // },
-    {
+      },
+
+      {
         path: 'account',
         component: AccountLayoutComponent,
         children: [
-            { path: '', redirectTo: 'account', pathMatch: 'full' },
-            { path: 'profile', component: ProfileComponent },
-            { path: 'addresses', component: AddressesComponent },
-            { path: 'pan', component: PanComponent },
-            { path: 'wishlist', component: WishlistComponent }
+          { path: 'profile', component: ProfileComponent },
+          { path: 'addresses', component: AddressesComponent },
+          { path: 'pan', component: PanComponent },
+          { path: 'wishlist', component: WishlistComponent }
         ]
-    },
+      }
+    ]
+  },
 
-    {
-        path: '**',
-        loadChildren: () => import('./pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
-    }
-]
+  // ================= ADMIN PANEL =================
+  {
+    path: 'admin',
+        loadChildren: () => import('./pages/admin/admin.module').then(m => m.AdminModule)
+
+    // component: AdminLayoutComponent,
+    // // canActivate: [AdminGuard], // baad me add karenge
+    // children: [
+    //   {
+    //     path: '',
+    //     redirectTo: 'dashboard',
+    //     pathMatch: 'full'
+    //   },
+  
+    // ]
+  },
+
+  // ================= 404 =================
+  {
+    path: '**',
+    loadChildren: () =>
+      import('./pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
+  }
+];
+
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],

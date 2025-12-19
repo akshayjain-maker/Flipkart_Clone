@@ -3,53 +3,68 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:5000/api/auth';
+    private baseUrl = 'http://localhost:5000/api/auth';
 
-  private authStatus$ = new BehaviorSubject<boolean>(this.hasToken());
+    private authStatus$ = new BehaviorSubject<boolean>(this.hasToken());
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
 
-  login(data: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/login`, data).pipe(
-      tap((res) => {
-        if (res?.token) {
-          this.saveToken(res.token);
-          this.authStatus$.next(true);   
-        }
-      })
-    );
-  }
+    login(data: any): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/login`, data).pipe(
+            tap((res) => {
+                if (res?.token) {
+                    this.saveToken(res.token);
+                    this.authStatus$.next(true);
+                }
+            })
+        );
+    }
 
-  register(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, data);
-  }
+    register(data: any): Observable<any> {
+        return this.http.post(`${this.baseUrl}/register`, data);
+    }
 
-  private hasToken(): boolean {
-    return !!localStorage.getItem('token');
-  }
+    private hasToken(): boolean {
+        return !!localStorage.getItem('token');
+    }
 
-  saveToken(token: string) {
-    localStorage.setItem('token', token);
-  }
+    saveToken(token: string) {
+        localStorage.setItem('token', token);
+    }
 
-  getToken() {
-    return localStorage.getItem('token');
-  }
+    getToken() {
+        return localStorage.getItem('token');
+    }
 
-  isLoggedIn(): boolean {
-    return this.hasToken();
-  }
+    isLoggedIn(): boolean {
+        return this.hasToken();
+    }
 
-  logout() {
-    localStorage.removeItem('token');
-    this.authStatus$.next(false); 
-  }
+    logout() {
+        localStorage.removeItem('token');
+        this.authStatus$.next(false);
+    }
 
-  getAuthStatus(): Observable<boolean> {
-    return this.authStatus$.asObservable();
-  }
+    getAuthStatus(): Observable<boolean> {
+        return this.authStatus$.asObservable();
+    }
+
+    saveUser(user: any) {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+    getUser() {
+        const user = localStorage.getItem('user');
+        return user ? JSON.parse(user) : null;
+    }
+    getRole(): string | null {
+        return this.getUser()?.role || null;
+    }
+
+    isAdmin(): boolean {
+        return this.getRole() === 'ADMIN';
+    }
 }

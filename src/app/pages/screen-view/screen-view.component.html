@@ -1,143 +1,126 @@
 <div class="container mx-auto pt-24 px-4">
 
   <!-- ================= CATEGORY MENU ================= -->
-<div class="flex gap-6 py-4 border-b overflow-x-auto whitespace-nowrap">
+  <div class="flex gap-6 py-4 border-b overflow-x-auto whitespace-nowrap">
 
-  <div *ngFor="let cat of categories"
-       (click)="goToCategory(cat)"
-       class="cursor-pointer font-medium px-2 py-1 hover:text-blue-600">
-    {{cat}}
-  </div>
-
-</div>
-
-
-
-<div class="relative mt-4 group w-full overflow-hidden rounded-lg">
-
-  <owl-carousel-o #owlCarousel [options]="bannerOptions" (translated)="onSlideChange()">
-    <ng-template carouselSlide *ngFor="let banner of banners">
-
-      <!-- Compact Banner Size -->
-      <img [src]="banner" 
-           class="w-full h-[180px] sm:h-[220px] md:h-[260px] object-cover rounded-lg" />
-
-    </ng-template>
-  </owl-carousel-o>
-
-  <!-- Prev Btn -->
-  <button (click)="prev()"
-    class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white text-xl px-2 py-1 rounded-full
-    opacity-0 group-hover:opacity-100 transition">
-    ‹
-  </button>
-
-  <!-- Next Btn -->
-  <button (click)="next()"
-    class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white text-xl px-2 py-1 rounded-full
-    opacity-0 group-hover:opacity-100 transition">
-    ›
-  </button>
-
-  <!-- Progress bar bottom -->
-  <div class="absolute bottom-0 left-0 w-full h-[3px] bg-gray-300">
-    <div class="h-full bg-blue-500 transition-all duration-[3000ms]" [style.width.%]="progress"></div>
-  </div>
-
-</div>
-
-
-
-
-
-
-  <!-- ================= BEST PRODUCTS SECTION ================= -->
-    <div class="mt-8">
-        <h2 class="text-2xl font-bold mb-4">Best Offers For You</h2>
-
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-
-        <div *ngFor="let item of bestProducts" 
-            class="bg-white shadow hover:shadow-xl rounded-xl p-3 cursor-pointer transition transform hover:scale-[1.03]"
-            (click)="openImage(item.image)">
-
-            <img [src]="item.image" alt="" class="h-40 w-full object-cover rounded-lg mb-3">
-
-            <h3 class="text-sm font-semibold truncate">{{ item.name }}</h3>
-            <p class="text-green-600 font-bold mt-1">₹ {{ item.price }}</p>
-            <p class="text-gray-500 text-xs">Upto {{ item.offer }}% Off</p>
-        </div>
-        </div>
+    <div *ngFor="let cat of categories"
+         (click)="goToCategory(cat.slug)"
+         class="cursor-pointer font-medium px-2 py-1 hover:text-blue-600">
+      {{ cat.name }}
     </div>
 
+  </div>
 
-    <!-- 🔥 IMAGE POPUP MODAL -->
-    <!-- 🔥 IMAGE POPUP MODAL -->
-<!-- 🔥 IMAGE POPUP MODAL -->
-<div *ngIf="selectedImage"
-     class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[999]">
-
-  <div class="bg-white w-[80%] max-h-[90%] rounded-lg p-6 flex gap-6 overflow-y-auto relative">
-
-    <!-- Close Button -->
-    <button (click)="closeImage()"
-            class="absolute top-3 right-4 text-gray-700 text-2xl font-bold hover:text-red-500 transition">
-        ✕
+  <!-- Pagination for Categories -->
+  <div *ngIf="totalPages > 1" class="flex justify-center gap-4 py-2">
+    <button 
+      class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+      [disabled]="page === 1"
+      (click)="prevPage()">
+      Prev
     </button>
-    <div class="w-1/2 flex flex-col items-center gap-4">
 
-        <!-- Product Image -->
-        <img [src]="selectedImage"
-             class="max-h-[60vh] w-auto rounded-lg shadow-md" />
+    <span class="text-gray-600">Page {{ page }} / {{ totalPages }}</span>
 
-        <!-- Buttons -->
-        <div class="flex gap-5 mt-2">
-            <button class="bg-orange-500 px-6 py-2 text-white rounded-lg hover:bg-orange-600">
-                Add to Cart
-            </button>
-            <button class="bg-blue-600 px-6 py-2 text-white rounded-lg hover:bg-blue-700"(click)="buyNow()">
-                Buy Now
-            </button>
-        </div>
+    <button 
+      class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+      [disabled]="page === totalPages"
+      (click)="nextPage()">
+      Next
+    </button>
+  </div>
+
+  <!-- ================= BANNER CAROUSEL ================= -->
+  <div class="relative mt-4 group w-full overflow-hidden rounded-lg">
+
+    <owl-carousel-o #owlCarousel [options]="bannerOptions" (translated)="onSlideChange()">
+      <ng-template carouselSlide *ngFor="let banner of banners">
+        <img [src]="banner" 
+             class="w-full h-[180px] sm:h-[220px] md:h-[260px] object-cover rounded-lg" />
+      </ng-template>
+    </owl-carousel-o>
+
+    <!-- Prev & Next Buttons -->
+    <button (click)="prev()"
+      class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white text-xl px-2 py-1 rounded-full
+      opacity-0 group-hover:opacity-100 transition">
+      ‹
+    </button>
+    <button (click)="next()"
+      class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white text-xl px-2 py-1 rounded-full
+      opacity-0 group-hover:opacity-100 transition">
+      ›
+    </button>
+
+    <!-- Progress bar -->
+    <div class="absolute bottom-0 left-0 w-full h-[3px] bg-gray-300">
+      <div class="h-full bg-blue-500 transition-all duration-[3000ms]" [style.width.%]="progress"></div>
     </div>
-    <!-- =========== LEFT DETAILS SECTION =========== -->
-    <div class="w-1/2 pr-5 overflow-y-auto">
-
-        <h2 class="text-3xl font-bold mb-3">{{ selectedProduct?.name }}</h2>
-
-        <p class="text-green-600 text-2xl font-semibold">
-            ₹ {{ selectedProduct?.price }}
-        </p>
-        <p class="text-gray-500 text-sm mb-3">
-            Upto {{ selectedProduct?.offer }}% OFF
-        </p>
-
-        <h3 class="font-bold text-lg mt-4">Description</h3>
-        <p class="text-gray-700 text-sm leading-relaxed mb-4">
-            {{ selectedProduct?.description }}
-        </p>
-
-        <h3 class="font-bold text-lg mt-4">Available Offers</h3>
-        <ul class="list-disc pl-5 text-gray-700 text-sm mb-4">
-            <li *ngFor="let offer of selectedProduct?.offers">{{offer}}</li>
-        </ul>
-
-        <h3 class="font-bold text-lg mt-4">Specifications</h3>
-        <ul class="list-disc pl-5 text-gray-700 text-sm">
-            <li *ngFor="let spec of selectedProduct?.specifications">{{spec}}</li>
-        </ul>
-
-    </div>
-
-    <!-- =========== RIGHT IMAGE & BUY BUTTONS =========== -->
-
 
   </div>
-</div>
 
+  <!-- ================= BEST PRODUCTS ================= -->
+  <div class="mt-8">
+    <h2 class="text-2xl font-bold mb-4">Best Offers For You</h2>
 
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+      <div *ngFor="let item of bestProducts" 
+          class="bg-white shadow hover:shadow-xl rounded-xl p-3 cursor-pointer transition transform hover:scale-[1.03]"
+          (click)="openImage(item.image)">
 
+          <img [src]="item.image" alt="" class="h-40 w-full object-cover rounded-lg mb-3">
 
+          <h3 class="text-sm font-semibold truncate">{{ item.name }}</h3>
+          <p class="text-green-600 font-bold mt-1">₹ {{ item.price }}</p>
+          <p class="text-gray-500 text-xs">Upto {{ item.offer }}% Off</p>
+      </div>
+    </div>
+  </div>
 
+  <!-- 🔥 IMAGE POPUP MODAL -->
+  <div *ngIf="selectedImage"
+       class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-[999]">
 
+    <div class="bg-white w-[80%] max-h-[90%] rounded-lg p-6 flex gap-6 overflow-y-auto relative">
+
+      <!-- Close Button -->
+      <button (click)="closeImage()"
+              class="absolute top-3 right-4 text-gray-700 text-2xl font-bold hover:text-red-500 transition">
+          ✕
+      </button>
+
+      <div class="w-1/2 flex flex-col items-center gap-4">
+          <img [src]="selectedImage" class="max-h-[60vh] w-auto rounded-lg shadow-md" />
+          <div class="flex gap-5 mt-2">
+              <button class="bg-orange-500 px-6 py-2 text-white rounded-lg hover:bg-orange-600">
+                  Add to Cart
+              </button>
+              <button class="bg-blue-600 px-6 py-2 text-white rounded-lg hover:bg-blue-700"
+                      (click)="buyNow()">
+                  Buy Now
+              </button>
+          </div>
+      </div>
+
+      <div class="w-1/2 pr-5 overflow-y-auto">
+          <h2 class="text-3xl font-bold mb-3">{{ selectedProduct?.name }}</h2>
+          <p class="text-green-600 text-2xl font-semibold">₹ {{ selectedProduct?.price }}</p>
+          <p class="text-gray-500 text-sm mb-3">Upto {{ selectedProduct?.offer }}% OFF</p>
+
+          <h3 class="font-bold text-lg mt-4">Description</h3>
+          <p class="text-gray-700 text-sm leading-relaxed mb-4">{{ selectedProduct?.description }}</p>
+
+          <h3 class="font-bold text-lg mt-4">Available Offers</h3>
+          <ul class="list-disc pl-5 text-gray-700 text-sm mb-4">
+              <li *ngFor="let offer of selectedProduct?.offers">{{offer}}</li>
+          </ul>
+
+          <h3 class="font-bold text-lg mt-4">Specifications</h3>
+          <ul class="list-disc pl-5 text-gray-700 text-sm">
+              <li *ngFor="let spec of selectedProduct?.specifications">{{spec}}</li>
+          </ul>
+      </div>
+
+    </div>
+  </div>
 </div>

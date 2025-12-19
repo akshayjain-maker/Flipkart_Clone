@@ -32,6 +32,10 @@ import { AccountLayoutComponent } from './pages/account-layout/account-layout.co
 import { AddressesComponent } from './pages/account/addresses/addresses.component';
 import { PanComponent } from './pages/account/pan/pan.component';
 import { WishlistComponent } from './pages/account/wishlist/wishlist.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { AdminHeaderComponent } from './layouts/admin-layout/admin-header/admin-header.component';
+import { SidebarComponent } from './layouts/admin-layout/sidebar/sidebar.component';
 
 
 const storeDevtoolsModule = !environment.production
@@ -44,7 +48,7 @@ const storeDevtoolsModule = !environment.production
     : []
 
 @NgModule({
-    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent, ProfileComponent, AccountLayoutComponent, AddressesComponent, PanComponent, WishlistComponent],
+    declarations: [AppComponent, HomeComponent, HeaderComponent, FooterComponent,ScreenViewComponent, CategoryProductsComponent, OrderCheckoutComponent, OrderSummaryComponent, ProfileComponent, AccountLayoutComponent, AddressesComponent, PanComponent, WishlistComponent, MainLayoutComponent, AdminLayoutComponent, AdminHeaderComponent, SidebarComponent],
     imports: [
         BrowserModule,
         AppRoutingModule,
