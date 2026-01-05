@@ -1,121 +1,130 @@
 import {
-    Component,
-    ComponentRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    TemplateRef,
-    ViewChild,
-    ViewContainerRef
-} from '@angular/core'
-import { FormControl, FormGroup, Validators } from '@angular/forms'
-import { DynamicFormFactory } from './dynamic-form.factory'
-import { FormField } from './dynamic-form.interface'
+  Component,
+  ComponentRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DynamicFormFactory } from './dynamic-form.factory';
+import { FormField } from './dynamic-form.interface';
 
 @Component({
-    selector: 'app-dynamic-form',
-    templateUrl: './dynamic-form.component.html',
-    styleUrls: ['./dynamic-form.component.scss']
+  selector: 'app-dynamic-form',
+  templateUrl: './dynamic-form.component.html',
+  styleUrls: ['./dynamic-form.component.scss']
 })
 export class DynamicFormComponent implements OnInit {
-    @Input() formGroup!: FormGroup
-    @Input() formFields: FormField[] = []
-    @Input() actionTemplate: TemplateRef<any> | undefined
-    @Input() hasResetBtn: boolean = false
 
-    @ViewChild('formContainer', { read: ViewContainerRef, static: true }) formContainer: ViewContainerRef | undefined
-    @ViewChild('form') form: any;
+  @Input() formGroup!: FormGroup;
+  @Input() formFields: FormField[] = [];
+  @Input() actionTemplate?: TemplateRef<any>;
+  @Input() hasResetBtn = false;
 
-    @Output() formSubmit = new EventEmitter<any>()
-    @Output() formGroupEvent = new EventEmitter<FormGroup>()
+  @ViewChild('formContainer', { read: ViewContainerRef, static: true })
+  formContainer!: ViewContainerRef;
 
-    constructor(private readonly dynamicFormFactory: DynamicFormFactory) {}
+  @Output() formSubmit = new EventEmitter<any>();
+  @Output() formGroupEvent = new EventEmitter<FormGroup>();
 
-    ngOnInit(): void {
-        if (this.formFields.length) {
-            this.buildForm(this.formFields)
-        }
+  constructor(private readonly dynamicFormFactory: DynamicFormFactory) {}
+
+  ngOnInit(): void {
+    this.buildForm(this.formFields);
+  }
+
+  buildForm(formFields: FormField[]): void {
+    if (!this.formGroup) {
+      this.formGroup = new FormGroup({});
     }
 
-    buildForm(formFields: FormField[]): void {
-        if (!this.formGroup) {
-            this.formGroup = new FormGroup({})
+    this.formContainer.clear();
+
+    formFields.forEach(field => {
+      const validators = this.createValidators(field);
+      const componentClass = this.dynamicFormFactory.getComponent(field.type);
+
+      if (!componentClass) return;
+
+      const componentRef: ComponentRef<any> =
+        this.formContainer.createComponent(componentClass);
+
+      const control = new FormControl('', validators);
+      this.formGroup.addControl(field.key, control);
+
+      componentRef.instance.control = control;
+      componentRef.instance.label = field.label;
+      componentRef.instance.matIcon = field.matIcon;
+      componentRef.instance.placeholder = field.placeholder;
+
+      const wrapperDiv = document.createElement('div');
+      wrapperDiv.className = `w-full ${field.wrapperClass ?? 'col-span-6'}`;
+      wrapperDiv.appendChild(componentRef.location.nativeElement);
+
+      /** ✅ ERROR MESSAGE DIV */
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'text-red-500 text-sm mt-1 hidden';
+
+      control.statusChanges.subscribe(() => {
+        if (control.invalid && (control.touched || control.dirty)) {
+          if (control.errors?.['required']) {
+            errorDiv.innerText = field.errorMessage?.required || 'Required';
+          } else if (control.errors?.['minlength']) {
+            errorDiv.innerText = field.errorMessage?.minLength || 'Invalid format';
+          } else if (control.errors?.['pattern']) {
+            errorDiv.innerText = field.errorMessage?.pattern || 'Invalid format';
+          }
+          errorDiv.classList.remove('hidden');
+        } else {
+          errorDiv.classList.add('hidden');
         }
+      });
 
-        if (this.formContainer) {
-            this.formContainer.clear()
+      wrapperDiv.appendChild(errorDiv);
+      this.formContainer.element.nativeElement.appendChild(wrapperDiv);
+    });
+  }
 
-            formFields.forEach(field => {
-                const validators: any = this.createValidators(field)
-                // Dynamically create the component for the field
-                const componentClass = this.dynamicFormFactory.getComponent(field.type)
+  createValidators(field: FormField): any[] {
+    const validators = [];
 
-                if (componentClass && this.formContainer) {
-                    const componentRef: ComponentRef<any> = this.formContainer.createComponent(componentClass)
-                    const control = new FormControl('', { validators })
-
-                    componentRef.instance.control = control
-                    componentRef.instance.label = field.label
-                    componentRef.instance.matIcon = field.matIcon
-                    componentRef.instance.iconPosition = field.iconPosition ?? 'suffix'
-                    componentRef.instance.placeholder = field.placeholder
-                    componentRef.instance.appearance = field.appearance ?? 'outline'
-                    componentRef.instance.hint = field.hint
-                    componentRef.instance.togglePassword = field.togglePassword ?? true
-
-                    // adding the controls into formGroup
-                    this.formGroup.addControl(field.key, control)
-
-                    // Create a wrapper div and add classes
-                    const wrapperDiv = document.createElement('div')
-                    wrapperDiv.classList.add('w-full')
-                    wrapperDiv.classList.add(`${field?.wrapperClass ?? 'col-span-6'}`)
-                    wrapperDiv.appendChild(componentRef.location.nativeElement)
-
-                    this.formContainer?.element.nativeElement.appendChild(wrapperDiv)
-                }
-            })
-        }
+    if (field.required) {
+      validators.push(Validators.required);
+    }
+    if (field.minLength) {
+      validators.push(Validators.minLength(field.minLength));
+    }
+    if (field.maxLength) {
+      validators.push(Validators.maxLength(field.maxLength));
+    }
+    if (field.pattern) {
+      validators.push(Validators.pattern(field.pattern));
+    }
+    if (field.min) {
+      validators.push(Validators.min(field.min));
+    }
+    if (field.max) {
+      validators.push(Validators.max(field.max));
     }
 
-    createValidators(field: FormField): Validators[] {
-        const validators: Validators[] = []
+    return validators;
+  }
 
-        if (field.required) {
-            validators.push(Validators.required)
-        }
-
-        if (field.minLength) {
-            validators.push(Validators.minLength(field.minLength))
-        }
-        if (field.maxLength) {
-            validators.push(Validators.maxLength(field.maxLength))
-        }
-        if (field.pattern) {
-            validators.push(Validators.pattern(field.pattern))
-        }
-        if (field.min) {
-            validators.push(Validators.min(field.min))
-        }
-        if (field.max) {
-            validators.push(Validators.max(field.max))
-        }
-
-        return validators
+  onSubmit(): void {
+    if (this.formGroup.invalid) {
+      this.formGroup.markAllAsTouched(); // ✅ VERY IMPORTANT
+      return;
     }
 
-    onSubmit(): void {
-        if (this.formGroup.invalid) {
-            return
-        }
-        this.formSubmit.emit(this.formGroup.value)
-        this.formGroupEvent.emit(this.formGroup)
+    this.formSubmit.emit(this.formGroup.value);
+    this.formGroupEvent.emit(this.formGroup);
+  }
 
-        console.log('Alway show this.formGroup.value', this.formGroup.value)
-    }
-
-    onReset(): void {
-        this.formGroup.reset()
-    }
+  onReset(): void {
+    this.formGroup.reset();
+  }
 }

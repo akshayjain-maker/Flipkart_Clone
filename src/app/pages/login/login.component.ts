@@ -19,25 +19,24 @@ export class LoginComponent {
     ) { }
 
     onSubmit(formData: any) {
+        if (!(formData.email)) {
+            this.toastr.error('Invalid email domain', 'Error');
+            return;
+        }
+
         this.authService.login(formData).subscribe({
             next: (res) => {
-                console.log(res, "Login Response");
-
                 this.toastr.success("Login Successful!", "Success");
-
                 this.authService.saveToken(res.token);
                 this.authService.saveUser(res.user);
-                if (res.user.role === 'ADMIN') {
-                    this.router.navigate(['/admin']);
-                } else {
-                    this.router.navigate(['/']);
-                }
+                this.router.navigate([res.user.role === 'ADMIN' ? '/admin' : '/']);
             },
             error: (err) => {
                 this.toastr.error(err.error?.message || "Invalid credentials", "Error");
             }
         });
     }
+
 
 
     testNav() {

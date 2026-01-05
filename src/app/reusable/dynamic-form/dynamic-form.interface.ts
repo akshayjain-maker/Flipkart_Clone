@@ -16,5 +16,6 @@ export interface FormField {
     placeholder?: string
     appearance?: Appearance
     hint?: string
-    togglePassword?: boolean
+    togglePassword?: boolean,
+    errorMessage?: any
 }

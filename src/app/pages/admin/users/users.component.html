@@ -1,1 +1,113 @@
-<p>users works!</p>
+<div class="p-8 bg-gray-100 min-h-screen">
+
+  <!-- Header -->
+  <h1 class="text-2xl font-bold mb-4">Manage Users</h1>
+
+  <!-- 🔍 Search -->
+  <div class="mb-4">
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+      placeholder="Search by name, email, phone..."
+      class="w-full md:w-1/3 px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto bg-white rounded shadow">
+    <table class="w-full border-collapse">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="p-3 border-b cursor-pointer" (click)="changeSort('id')">
+            ID {{ sortBy === 'id' ? (sortOrder === 'asc' ? '↑' : '↓') : '' }}
+          </th>
+
+          <th class="p-3 border-b cursor-pointer" (click)="changeSort('name')">
+            Name {{ sortBy === 'name' ? (sortOrder === 'asc' ? '↑' : '↓') : '' }}
+          </th>
+
+          <th class="p-3 border-b cursor-pointer" (click)="changeSort('email')">
+            Email {{ sortBy === 'email' ? (sortOrder === 'asc' ? '↑' : '↓') : '' }}
+          </th>
+
+          <th class="p-3 border-b">Phone</th>
+          <th class="p-3 border-b text-center">Status</th>
+          <th class="p-3 border-b text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let u of users" class="hover:bg-gray-50 align-middle">
+          <td class="p-3 border-b">{{ u.id }}</td>
+          <td class="p-3 border-b">{{ u.name }}</td>
+          <td class="p-3 border-b">{{ u.email }}</td>
+          <td class="p-3 border-b">{{ u.phone || '-' }}</td>
+
+          <!-- STATUS COLUMN -->
+          <td class="p-3 border-b text-center">
+            <div class="flex flex-col items-center gap-1">
+              <span
+                class="px-3 py-1 text-xs font-medium rounded-full"
+                [class.bg-green-100]="u.isActive"
+                [class.text-green-700]="u.isActive"
+                [class.bg-red-100]="!u.isActive"
+                [class.text-red-700]="!u.isActive"
+              >
+                {{ u.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+          </td>
+
+          <!-- ACTIONS COLUMN -->
+          <td class="p-3 border-b text-center">
+            <div class="flex flex-col items-center gap-2">
+              <div class="flex gap-3">
+                <button
+                  (click)="toggleStatus(u)"
+                  class="px-3 py-1 text-xs border rounded
+                         text-blue-600 hover:bg-blue-50">
+                  Toggle
+                </button>
+
+                <button
+                  (click)="deleteUser(u.id)"
+                  class="px-3 py-1 text-xs border rounded
+                         text-red-600 hover:bg-red-50">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- NO DATA -->
+        <tr *ngIf="users.length === 0">
+          <td colspan="6" class="p-4 text-center text-gray-500">
+            No users found
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="flex justify-end items-center gap-3 mt-4">
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="px-3 py-1 border rounded">
+      Prev
+    </button>
+
+    <span class="text-sm">Page {{ currentPage }} of {{ totalPages }}</span>
+
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      class="px-3 py-1 border rounded">
+      Next
+    </button>
+  </div>
+
+</div>

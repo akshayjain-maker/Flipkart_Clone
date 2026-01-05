@@ -7,19 +7,25 @@ import { ProductsComponent } from './products/products.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { UsersComponent } from './users/users.component';
 import { OrdersComponent } from './orders/orders.component';
-
-
+import { FormsModule } from '@angular/forms';
+import { ProductModalComponent } from './products/product-modal/product-modal.component';
 @NgModule({
   declarations: [
     DashboardComponent,
     ProductsComponent,
     CategoriesComponent,
     UsersComponent,
-    OrdersComponent
+    OrdersComponent,
+    ProductModalComponent
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    FormsModule
+  ],
+   exports: [
+    ProductsComponent,
+    ProductModalComponent
   ]
 })
 export class AdminModule { }

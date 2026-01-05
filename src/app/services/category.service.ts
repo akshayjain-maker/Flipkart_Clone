@@ -8,11 +8,23 @@ import { Observable } from 'rxjs';
 })
 export class CategoryService {
 
-  private baseUrl = 'http://localhost:5000/api/categories';
+  private baseUrl = 'http://localhost:5000/api/admin/categories';
 
   constructor(private http: HttpClient) {}
 
   getCategories(page: number = 1, limit: number = 10): Observable<any> {
     return this.http.get(`${this.baseUrl}?page=${page}&limit=${limit}`);
+  }
+
+    createCategory(formData: FormData) {
+    return this.http.post(this.baseUrl, formData);
+  }
+
+  updateCategory(id: number, formData: FormData) {
+    return this.http.put(`${this.baseUrl}/${id}`, formData);
+  }
+
+  deleteCategory(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }
